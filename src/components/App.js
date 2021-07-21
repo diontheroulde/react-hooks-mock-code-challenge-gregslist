@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import ListingsContainer from "./ListingsContainer";
 
+
 function App() {
   const [listings, setListings] = useState([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     fetch("http://localhost:6001/listings")
@@ -16,12 +18,14 @@ function App() {
     setListings(filteredListing)
   }
 
+  const searchListings = listings.filter(listing =>(
+    listing.description.toLowerCase().includes(search.toLowerCase())
+  ))
   
-
   return (
     <div className="app">
-      <Header />
-      <ListingsContainer listings={listings} onDeleteListing={handleDeleteListing} />
+      <Header setSearch={setSearch} search={search} />
+      <ListingsContainer listings={searchListings} onDeleteListing={handleDeleteListing} />
     </div>
   );
 }
